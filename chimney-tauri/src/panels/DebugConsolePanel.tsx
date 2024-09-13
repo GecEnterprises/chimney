@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import PanelContainer from '../components/PanelContainer';
 
@@ -32,40 +32,57 @@ const ConsoleInput = styled.input`
   }
 `;
 
-const LogEntry = styled.div`
+
+import { useAtom, useSetAtom } from 'jotai';
+import { LogLevel,logsAtom, clearLogsAtom, logInfoAtom } from '../states/logger';
+
+const LogEntry = styled.div<{ level: LogLevel }>`
   margin-bottom: 4px;
+  color: ${({ level, theme }) => {
+    switch (level) {
+      case LogLevel.INFO:
+        return theme.colors.text;
+      case LogLevel.WARN:
+        return theme.colors.warning;
+      case LogLevel.DEBUG:
+        return theme.colors.secondary;
+      case LogLevel.ERROR:
+        return theme.colors.error;
+      default:
+        return theme.colors.text;
+    }
+  }};
 `;
 
-const DebugConsolePanel: React.FC = () => {
-  const [logs, setLogs] = useState<string[]>([
-    'Debug console initialized.',
-    'Type your commands below.',
-  ]);
-  const [input, setInput] = useState('');
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInput(e.target.value);
-  };
+const DebugLogPanel: React.FC = () => {
+  const [logs] = useAtom(logsAtom);
+  const setClearLogs = useSetAtom(clearLogsAtom);
+  const setLogInfo = useSetAtom(logInfoAtom);
 
   const handleInputSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && input.trim() !== '') {
-      setLogs([...logs, `> ${input}`, `Executed: ${input}`]);
-      setInput('');
+    if (e.key === 'Enter' && e.currentTarget.value.trim() !== '') {
+      const input = e.currentTarget.value.trim();
+      if (input === 'clear') {
+        setClearLogs();
+      } else {
+        setLogInfo(`Executed: ${input}`);
+      }
+      e.currentTarget.value = '';
     }
   };
 
   return (
-    <PanelContainer title="Debug Console">
+    <PanelContainer title="Debug Log">
       <ConsoleContainer>
         <ConsoleOutput>
-          {logs.map((log, index) => (
-            <LogEntry key={index}>{log}</LogEntry>
+          {logs.map((log, index: number) => (
+            <LogEntry key={index} level={log.level}>
+              [{log.timestamp.toLocaleTimeString()}] [{log.level}] {log.message}
+            </LogEntry>
           ))}
         </ConsoleOutput>
         <ConsoleInput
           type="text"
-          value={input}
-          onChange={handleInputChange}
           onKeyDown={handleInputSubmit}
           placeholder="Enter debug command..."
         />
@@ -74,4 +91,4 @@ const DebugConsolePanel: React.FC = () => {
   );
 };
 
-export default DebugConsolePanel;
+export default DebugLogPanel;

@@ -9,7 +9,6 @@ interface PanelContainerProps {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  /* border: 1px solid ${({ theme }) => theme.colors.border}; */
   overflow: hidden;
   height: 100%;
 `;
@@ -22,7 +21,6 @@ const TitleBar = styled.div`
   font-size: 11px;
   font-weight: 600;
   user-select: none;
-  border-top: 1px solid ${({ theme }) => theme.colors.border};
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   display: flex;
   align-items: center;
@@ -35,7 +33,6 @@ const TitleText = styled.span`
 const Content = styled.div`
   flex: 1;
   overflow: auto;
-  padding: 8px;
   background-color: ${({ theme }) => theme.colors.background};
   font-size: 13px;
 `;

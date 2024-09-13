@@ -1,5 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import { logDebugAtom } from '../states/logger';
+import { Orientation, orientationAtom } from '../states/config';
+import { useSetAtom } from 'jotai';
 
 const HeaderContainer = styled.header`
   display: flex;
@@ -76,6 +79,15 @@ const Icon = styled.span`
 `;
 
 const Header: React.FC = () => {
+    const setOrientation = useSetAtom(orientationAtom);
+
+  const logDebug = useSetAtom(logDebugAtom);
+
+  const handleUpClick = () => {
+    setOrientation((prevOrientation: Orientation) => prevOrientation === Orientation.Vertical ? Orientation.Horizontal : Orientation.Vertical);
+    logDebug('Flipping orientation');
+  };
+
   return (
     <HeaderContainer>
       <HeaderNav>
@@ -92,6 +104,7 @@ const Header: React.FC = () => {
       </HeaderNav>
       <IconContainer>
         <Icon>🟨</Icon>
+        <Icon onClick={handleUpClick}>🆙</Icon>
       </IconContainer>
     </HeaderContainer>
   );

@@ -1,11 +1,13 @@
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import Header from './components/Header';
 import { ThemeProvider, createGlobalStyle, styled } from 'styled-components';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { theme } from './Theme';
-import PanelContainer from './components/PanelContainer';
 import DebugConsolePanel from './panels/DebugConsolePanel';
 import TraversePanel from './panels/TraversePanel';
+import { orientationAtom } from './states/config';
+import { Orientation } from './states/config';
+import {  useAtomValue, useSetAtom } from 'jotai';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -24,24 +26,44 @@ const GlobalStyle = createGlobalStyle`
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-
-  .panel-resize-handle {
+  .panel-resize-handle-horizontal {
     cursor: col-resize;
     background-color: ${({ theme }) => theme.colors.borderSecondary};
     width: 2px;
     transition: background-color 0.3s ease;
   }
 
-  .panel-resize-handle:hover {
+  .panel-resize-handle-horizontal:hover {
     background-color: ${({ theme }) => theme.colors.primary};
   }
 
-  .panel-resize-handle:active {
+  .panel-resize-handle-horizontal:active {
     background-color: ${({ theme }) => theme.colors.primary};
     cursor: ew-resize;
   }
 
-  .panel-resize-handle:focus {
+  .panel-resize-handle-horizontal:focus {
+    outline: none;
+    box-shadow: none;
+  }
+
+  .panel-resize-handle-vertical {
+    cursor: row-resize;
+    background-color: ${({ theme }) => theme.colors.borderSecondary};
+    height: 2px;
+    transition: background-color 0.3s ease;
+  }
+
+  .panel-resize-handle-vertical:hover {
+    background-color: ${({ theme }) => theme.colors.primary};
+  }
+
+  .panel-resize-handle-vertical:active {
+    background-color: ${({ theme }) => theme.colors.primary};
+    cursor: ns-resize;
+  }
+
+  .panel-resize-handle-vertical:focus {
     outline: none;
     box-shadow: none;
   }
@@ -57,12 +79,31 @@ const PanelGroupStyling = styled.div`
   flex-direction: column;
 `;
 
-const PanelContent = styled.div`
-  height: 100%;
-`;
+import { logDebugAtom } from './states/logger';
 
 function App() {
-  const [currentTheme,] = useState<'light' | 'dark'>('dark');
+  const [currentTheme] = useState<'light' | 'dark'>('dark');
+  const orientation = useAtomValue(orientationAtom);
+
+  const logDebug = useSetAtom(logDebugAtom);
+
+  useEffect(() => {
+    logDebug('App mounted');
+  }, []);
+
+  const renderPanels = () => (
+    <>
+      <Panel minSize={20}>
+        <TraversePanel />
+      </Panel>
+      <PanelResizeHandle 
+        className={`panel-resize-handle panel-resize-handle-${orientation === Orientation.Vertical ? 'vertical' : 'horizontal'}`} 
+      />
+      <Panel minSize={20}>
+        <DebugConsolePanel />
+      </Panel>
+    </>
+  );
 
   return (  
     <ThemeProvider theme={theme[currentTheme]}>
@@ -70,14 +111,8 @@ function App() {
       <AppContainer>
         <Header />
         <PanelGroupStyling>
-          <PanelGroup direction="horizontal" >
-            <Panel minSize={20}>
-              <TraversePanel />
-            </Panel>
-            <PanelResizeHandle className='panel-resize-handle' />
-            <Panel minSize={20}>
-              <DebugConsolePanel />
-            </Panel>
+          <PanelGroup direction={orientation}>
+            {renderPanels()}
           </PanelGroup>
         </PanelGroupStyling>
       </AppContainer>

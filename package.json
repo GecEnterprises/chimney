@@ -4,5 +4,9 @@
   "workspaces": [
     "chimney-tauri",
     "chimney-defs"
-  ]
+  ],
+  "dependencies": {
+    "jotai": "^2.9.3",
+    "zustand": "^4.5.5"
+  }
 }
