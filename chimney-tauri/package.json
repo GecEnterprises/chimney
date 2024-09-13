@@ -12,7 +12,7 @@
   "dependencies": {
     "@blueprintjs/core": "^5.12.0",
     "@blueprintjs/icons": "^5.12.0",
-    "@tauri-apps/api": "^1",
+    "@tauri-apps/api": "^1.6.0",
     "chimney-defs": "workspace:*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
