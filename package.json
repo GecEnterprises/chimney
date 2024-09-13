@@ -1,0 +1,8 @@
+{
+  "name": "chimney",
+  "private": true,
+  "workspaces": [
+    "chimney-tauri",
+    "chimney-defs"
+  ]
+}
