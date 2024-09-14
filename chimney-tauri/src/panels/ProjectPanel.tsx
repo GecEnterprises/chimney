@@ -60,11 +60,18 @@ const ProjectPanel: React.FC = () => {
 
   useEffect(() => {
     refetchFileTree()
-    console.log(workingDirectory)
   }, [workingDirectory])
 
+  const getTrailingDirectory = (path: string | null) => {
+    if (!path) return 'Project'
+    const parts = path.split(/[/\\]/)
+    return parts[parts.length - 1]
+  }
+
+  const panelTitle = `Project - ${getTrailingDirectory(workingDirectory)}`
+
   return (
-    <PanelContainer title="Project">
+    <PanelContainer title={panelTitle}>
       <TreeContainer>
         {fileTree.map((item, index) => (
           <FileTreeNode key={index} item={item} depth={0} />

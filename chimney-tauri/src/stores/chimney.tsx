@@ -1,6 +1,6 @@
 import DebugConsolePanel from '../panels/DebugConsolePanel'
 import ProjectPanel from '../panels/ProjectPanel'
-import TraversePanel from '../panels/TraversePanel'
+import TraversePanel from '../panels/traverser/TraversePanel'
 import { retry } from '@lifeomic/attempt'
 import { readDir } from '@tauri-apps/plugin-fs'
 import { Store } from '@tauri-apps/plugin-store'
@@ -65,8 +65,6 @@ export const useChimneyStore = create<ChimneyStore>((set) => ({
 
     if (workingDirectory) {
       const dir = await readDir(workingDirectory)
-
-      console.log(dir)
 
       const fileTree = dir.map((item) => ({
         name: item.name,

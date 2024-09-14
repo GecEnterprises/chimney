@@ -137,7 +137,7 @@ const Header: React.FC = () => {
       <HeaderNav>
         <HeaderMenu>
           <HeaderMenuItem>
-            <MenuSpan>Help</MenuSpan>
+            <MenuSpan>⛷️⛷️⛷️</MenuSpan>
             <Submenu>
               <SubmenuItem>Welcome</SubmenuItem>
               <SubmenuItem>Documentation</SubmenuItem>
@@ -150,16 +150,16 @@ const Header: React.FC = () => {
         {workingDirectory ? workingDirectory : 'No directory selected'}
       </CenteredText>
       <IconContainer>
-        <HeaderMenu>
+        {/* <HeaderMenu>
           <HeaderMenuItem>
             <MenuSpan>🪟open panel</MenuSpan>
             <Submenu>
               <SubmenuItem>Welcome</SubmenuItem>
               <SubmenuItem>Documentation</SubmenuItem>
-              <SubmenuItem>About</SubmenuItem>
+              <SubmenuItem>About</  SubmenuItem>
             </Submenu>
           </HeaderMenuItem>
-        </HeaderMenu>
+        </HeaderMenu> */}
         <Icon onClick={handleOpen}>🗃️open</Icon>
         <Icon onClick={handleUpClick}>💽save state</Icon>
       </IconContainer>
