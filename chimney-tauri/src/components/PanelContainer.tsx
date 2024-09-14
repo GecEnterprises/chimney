@@ -4,7 +4,6 @@ import styled from 'styled-components'
 interface PanelContainerProps {
   title: string
   children: ReactNode
-  onClose: () => void
 }
 
 const Container = styled.div`

@@ -1,8 +1,7 @@
-import { Orientation, workingDirectoryAtom } from '../stores/chimney'
+import { Orientation, useChimneyStore } from '../stores/chimney'
 import { orientationAtom } from '../stores/config'
 import { logDebugAtom } from '../stores/logger'
-import { open } from '@tauri-apps/api/dialog'
-import { useAtom, useSetAtom } from 'jotai'
+import { open } from '@tauri-apps/plugin-dialog'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -104,17 +103,13 @@ const CenteredText = styled.div`
 `
 
 const Header: React.FC = () => {
-  const setOrientation = useSetAtom(orientationAtom)
-  const setWorkingDirectory = useSetAtom(workingDirectoryAtom)
-  const logDebug = useSetAtom(logDebugAtom)
+  const setWorkingDirectory = useChimneyStore((e) => e.setWorkingDirectory)
+  // const logDebug = useSetAtom(logDebugAtom)
+
+  const saveState = useChimneyStore((e) => e.saveState)
 
   const handleUpClick = () => {
-    setOrientation((prevOrientation: Orientation) =>
-      prevOrientation === Orientation.Vertical
-        ? Orientation.Horizontal
-        : Orientation.Vertical
-    )
-    logDebug('Flipping orientation')
+    saveState()
   }
 
   const handleOpen = async () => {
@@ -135,7 +130,7 @@ const Header: React.FC = () => {
     }
   }
 
-  const [workingDirectory] = useAtom(workingDirectoryAtom)
+  const workingDirectory = useChimneyStore((state) => [state.workingDirectory])
 
   return (
     <HeaderContainer>
@@ -166,7 +161,7 @@ const Header: React.FC = () => {
           </HeaderMenuItem>
         </HeaderMenu>
         <Icon onClick={handleOpen}>🗃️open</Icon>
-        <Icon onClick={handleUpClick}>🆙rotate</Icon>
+        <Icon onClick={handleUpClick}>💽save state</Icon>
       </IconContainer>
     </HeaderContainer>
   )

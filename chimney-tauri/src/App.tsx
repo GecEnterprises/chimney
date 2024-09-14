@@ -1,8 +1,7 @@
 import { theme } from './Theme'
 import Header from './components/Header'
-import { Orientation, PanelItem, panelsAtom } from './stores/chimney'
+import { Orientation, PanelItem, useChimneyStore } from './stores/chimney'
 import { logDebugAtom } from './stores/logger'
-import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
 import React from 'react'
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels'
@@ -80,10 +79,10 @@ const PanelGroupStyling = styled.div`
 
 function App() {
   const [currentTheme] = useState<'light' | 'dark'>('dark')
-  const logDebug = useSetAtom(logDebugAtom)
+  const loadState = useChimneyStore((e) => e.loadState)
 
   useEffect(() => {
-    logDebug('App mounted')
+    loadState()
   }, [])
 
   const renderPanels = (structure: PanelItem) => (
@@ -96,7 +95,7 @@ function App() {
                 className={`panel-resize-handle panel-resize-handle-${structure.orientation === Orientation.Vertical ? 'vertical' : 'horizontal'}`}
               />
             )}
-            <Panel minSize={20}>
+            <Panel minSize={10}>
               {React.isValidElement(item)
                 ? item
                 : renderPanels(item as PanelItem)}
@@ -107,14 +106,14 @@ function App() {
     </>
   )
 
-  const panelStructure = useAtomValue(panelsAtom)
+  const panel = useChimneyStore((state) => state.panel)
 
   return (
     <ThemeProvider theme={theme[currentTheme]}>
       <GlobalStyle />
       <AppContainer>
         <Header />
-        <PanelGroupStyling>{renderPanels(panelStructure)}</PanelGroupStyling>
+        <PanelGroupStyling>{renderPanels(panel)}</PanelGroupStyling>
       </AppContainer>
     </ThemeProvider>
   )
