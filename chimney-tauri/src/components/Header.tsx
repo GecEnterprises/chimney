@@ -1,6 +1,4 @@
-import { Orientation, useChimneyStore } from '../stores/chimney'
-import { orientationAtom } from '../stores/config'
-import { logDebugAtom } from '../stores/logger'
+import { useChimneyStore } from '../stores/chimney'
 import { open } from '@tauri-apps/plugin-dialog'
 import React from 'react'
 import styled from 'styled-components'

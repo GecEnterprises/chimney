@@ -1,7 +1,6 @@
 import { theme } from './Theme'
 import Header from './components/Header'
 import { Orientation, PanelItem, useChimneyStore } from './stores/chimney'
-import { logDebugAtom } from './stores/logger'
 import { useEffect, useState } from 'react'
 import React from 'react'
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels'
