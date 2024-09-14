@@ -1,12 +1,19 @@
-import React from 'react';
-import styled from 'styled-components';
-import PanelContainer from '../components/PanelContainer';
+import PanelContainer from '../components/PanelContainer'
+import {
+  LogLevel,
+  logsAtom,
+  clearLogsAtom,
+  logInfoAtom,
+} from '../stores/logger'
+import { useAtom, useSetAtom } from 'jotai'
+import React from 'react'
+import styled from 'styled-components'
 
 const ConsoleContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-`;
+`
 
 const ConsoleOutput = styled.div`
   flex: 1;
@@ -16,7 +23,7 @@ const ConsoleOutput = styled.div`
   font-family: monospace;
   padding: 8px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-`;
+`
 
 const ConsoleInput = styled.input`
   background-color: ${({ theme }) => theme.colors.background};
@@ -30,46 +37,42 @@ const ConsoleInput = styled.input`
   &:focus {
     box-shadow: inset 0 0 0 1px ${({ theme }) => theme.colors.primary};
   }
-`;
-
-
-import { useAtom, useSetAtom } from 'jotai';
-import { LogLevel,logsAtom, clearLogsAtom, logInfoAtom } from '../states/logger';
+`
 
 const LogEntry = styled.div<{ level: LogLevel }>`
   margin-bottom: 4px;
   color: ${({ level, theme }) => {
     switch (level) {
       case LogLevel.INFO:
-        return theme.colors.text;
+        return theme.colors.text
       case LogLevel.WARN:
-        return theme.colors.warning;
+        return theme.colors.warning
       case LogLevel.DEBUG:
-        return theme.colors.secondary;
+        return theme.colors.secondary
       case LogLevel.ERROR:
-        return theme.colors.error;
+        return theme.colors.error
       default:
-        return theme.colors.text;
+        return theme.colors.text
     }
   }};
-`;
+`
 
 const DebugLogPanel: React.FC = () => {
-  const [logs] = useAtom(logsAtom);
-  const setClearLogs = useSetAtom(clearLogsAtom);
-  const setLogInfo = useSetAtom(logInfoAtom);
+  const [logs] = useAtom(logsAtom)
+  const setClearLogs = useSetAtom(clearLogsAtom)
+  const setLogInfo = useSetAtom(logInfoAtom)
 
   const handleInputSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && e.currentTarget.value.trim() !== '') {
-      const input = e.currentTarget.value.trim();
+      const input = e.currentTarget.value.trim()
       if (input === 'clear') {
-        setClearLogs();
+        setClearLogs()
       } else {
-        setLogInfo(`Executed: ${input}`);
+        setLogInfo(`Executed: ${input}`)
       }
-      e.currentTarget.value = '';
+      e.currentTarget.value = ''
     }
-  };
+  }
 
   return (
     <PanelContainer title="Debug Log">
@@ -88,7 +91,7 @@ const DebugLogPanel: React.FC = () => {
         />
       </ConsoleContainer>
     </PanelContainer>
-  );
-};
+  )
+}
 
-export default DebugLogPanel;
+export default DebugLogPanel

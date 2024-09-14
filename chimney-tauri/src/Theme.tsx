@@ -1,21 +1,21 @@
-import { DefaultTheme } from 'styled-components';
+import { DefaultTheme } from 'styled-components'
 
 export interface CustomTheme extends DefaultTheme {
-  mode: 'light' | 'dark';
+  mode: 'light' | 'dark'
   colors: {
-    primary: string;
-    secondary: string;
-    background: string;
-    text: string;
-    accent: string;
-    error: string;
-    success: string;
-    warning: string;
-    info: string;
-    border: string;
-    borderSecondary: string;
-    hover: string;
-  };
+    primary: string
+    secondary: string
+    background: string
+    text: string
+    accent: string
+    error: string
+    success: string
+    warning: string
+    info: string
+    border: string
+    borderSecondary: string
+    hover: string
+  }
 }
 
 const lightTheme: CustomTheme = {
@@ -34,7 +34,7 @@ const lightTheme: CustomTheme = {
     borderSecondary: '#e9ecef',
     hover: '#e9ecef',
   },
-};
+}
 
 const darkTheme: CustomTheme = {
   mode: 'dark',
@@ -52,11 +52,11 @@ const darkTheme: CustomTheme = {
     borderSecondary: '#2c2c2c',
     hover: '#2c2c2c',
   },
-};
+}
 
 export const theme = {
   light: lightTheme,
   dark: darkTheme,
-};
+}
 
-export default theme;
+export default theme

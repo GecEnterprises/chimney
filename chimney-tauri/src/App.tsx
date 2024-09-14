@@ -1,13 +1,12 @@
-import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
-import Header from './components/Header';
-import { ThemeProvider, createGlobalStyle, styled } from 'styled-components';
-import { useEffect, useState } from 'react';
-import { theme } from './Theme';
-import DebugConsolePanel from './panels/DebugConsolePanel';
-import TraversePanel from './panels/TraversePanel';
-import { orientationAtom } from './states/config';
-import { Orientation } from './states/config';
-import {  useAtomValue, useSetAtom } from 'jotai';
+import { theme } from './Theme'
+import Header from './components/Header'
+import { Orientation, PanelItem, panelsAtom } from './stores/chimney'
+import { logDebugAtom } from './stores/logger'
+import { useAtomValue, useSetAtom } from 'jotai'
+import { useEffect, useState } from 'react'
+import React from 'react'
+import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels'
+import { ThemeProvider, createGlobalStyle, styled } from 'styled-components'
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -67,57 +66,58 @@ const GlobalStyle = createGlobalStyle`
     outline: none;
     box-shadow: none;
   }
-`;
+`
 
 const AppContainer = styled.div`
   height: 100%;
-`;
+`
 
 const PanelGroupStyling = styled.div`
   height: calc(100% - 40px);
   display: flex;
   flex-direction: column;
-`;
-
-import { logDebugAtom } from './states/logger';
+`
 
 function App() {
-  const [currentTheme] = useState<'light' | 'dark'>('dark');
-  const orientation = useAtomValue(orientationAtom);
-
-  const logDebug = useSetAtom(logDebugAtom);
+  const [currentTheme] = useState<'light' | 'dark'>('dark')
+  const logDebug = useSetAtom(logDebugAtom)
 
   useEffect(() => {
-    logDebug('App mounted');
-  }, []);
+    logDebug('App mounted')
+  }, [])
 
-  const renderPanels = () => (
+  const renderPanels = (structure: PanelItem) => (
     <>
-      <Panel minSize={20}>
-        <TraversePanel />
-      </Panel>
-      <PanelResizeHandle 
-        className={`panel-resize-handle panel-resize-handle-${orientation === Orientation.Vertical ? 'vertical' : 'horizontal'}`} 
-      />
-      <Panel minSize={20}>
-        <DebugConsolePanel />
-      </Panel>
+      <PanelGroup direction={structure.orientation}>
+        {structure.panels.map((item, index) => (
+          <React.Fragment key={index}>
+            {index > 0 && (
+              <PanelResizeHandle
+                className={`panel-resize-handle panel-resize-handle-${structure.orientation === Orientation.Vertical ? 'vertical' : 'horizontal'}`}
+              />
+            )}
+            <Panel minSize={20}>
+              {React.isValidElement(item)
+                ? item
+                : renderPanels(item as PanelItem)}
+            </Panel>
+          </React.Fragment>
+        ))}
+      </PanelGroup>
     </>
-  );
+  )
 
-  return (  
+  const panelStructure = useAtomValue(panelsAtom)
+
+  return (
     <ThemeProvider theme={theme[currentTheme]}>
       <GlobalStyle />
       <AppContainer>
         <Header />
-        <PanelGroupStyling>
-          <PanelGroup direction={orientation}>
-            {renderPanels()}
-          </PanelGroup>
-        </PanelGroupStyling>
+        <PanelGroupStyling>{renderPanels(panelStructure)}</PanelGroupStyling>
       </AppContainer>
     </ThemeProvider>
-  );
+  )
 }
 
-export default App;
+export default App
