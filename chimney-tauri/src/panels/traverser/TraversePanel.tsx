@@ -19,17 +19,7 @@ const TraversePanel: React.FC = () => {
   return (
     <PanelContainer title="Traverse">
       <EditorContainer>
-        <NodeEditor
-          portTypes={config.portTypes}
-          nodeTypes={config.nodeTypes}
-          defaultNodes={[
-            {
-              type: 'addon',
-              x: 190,
-              y: -150,
-            },
-          ]}
-        />
+        <NodeEditor portTypes={config.portTypes} nodeTypes={config.nodeTypes} />
         <Toolbox onCenterFocus={handleCenterFocus} />
       </EditorContainer>
     </PanelContainer>

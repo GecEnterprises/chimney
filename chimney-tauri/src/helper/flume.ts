@@ -1,71 +1,47 @@
+import { DefVersion, ChimneyDefs } from 'chimney-defs'
 import { Colors, Controls, FlumeConfig } from 'flume'
 
 const config = new FlumeConfig()
-config.addPortType({
-  type: 'string',
-  name: 'string',
-  label: 'Text',
-  color: Colors.green,
-  controls: [
-    Controls.text({
-      name: 'string',
-      label: 'Text',
-    }),
-  ],
+
+const def = ChimneyDefs[DefVersion.V1]
+
+def.ports.forEach((port) => {
+  config.addPortType({
+    type: port.id,
+    name: port.id,
+    label: port.label,
+    color: Colors.green,
+    controls:
+      port.typeTs == 'string' ? [Controls.text({})] : [Controls.number({})],
+  })
 })
 
-config.addPortType({
-  type: 'boolean',
-  name: 'boolean',
-  label: 'Boolean',
-  color: Colors.blue,
-  controls: [
-    Controls.checkbox({
-      name: 'boolean',
-    }),
-  ],
-})
+def.nodes.forEach((node) => {
+  config.addNodeType({
+    type: node.id,
+    description: node.description,
+    label: node.label,
+    inputs: (ports) => {
+      let inputs = node.inputs.map((input) =>
+        ports[input.type]({
+          name: input.name,
+          label: input.label,
+        })
+      )
 
-config.addRootNodeType({
-  type: 'addon',
-  label: 'Add-On',
-  initialWidth: 170,
-  inputs: (ports) => [
-    ports.string({
-      name: 'title',
-      label: 'Title',
-    }),
-    ports.string({
-      name: 'description',
-      label: 'Description',
-    }),
+      return inputs
+    },
+    outputs: (ports) => {
+      let outputs = node.outputs.map((output) =>
+        ports[output.type]({
+          name: output.name,
+          label: output.label,
+        })
+      )
 
-    ports.boolean({
-      name: 'showSignup',
-      label: 'Show Signup',
-    }),
-  ],
-})
-
-config.addNodeType({
-  type: 'user',
-  label: 'User',
-  description: 'Outputs attributes of the current user',
-  initialWidth: 130,
-  outputs: (ports) => [
-    ports.string({
-      name: 'firstName',
-      label: 'First Name',
-    }),
-    ports.string({
-      name: 'lastName',
-      label: 'Last Name',
-    }),
-    ports.boolean({
-      name: 'isLoggedIn',
-      label: 'Is Logged-In',
-    }),
-  ],
+      return outputs
+    },
+  })
 })
 
 export default config

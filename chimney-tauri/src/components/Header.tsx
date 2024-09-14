@@ -104,7 +104,6 @@ const CenteredText = styled.div`
 
 const Header: React.FC = () => {
   const setWorkingDirectory = useChimneyStore((e) => e.setWorkingDirectory)
-  // const logDebug = useSetAtom(logDebugAtom)
 
   const saveState = useChimneyStore((e) => e.saveState)
 
@@ -150,16 +149,6 @@ const Header: React.FC = () => {
         {workingDirectory ? workingDirectory : 'No directory selected'}
       </CenteredText>
       <IconContainer>
-        {/* <HeaderMenu>
-          <HeaderMenuItem>
-            <MenuSpan>🪟open panel</MenuSpan>
-            <Submenu>
-              <SubmenuItem>Welcome</SubmenuItem>
-              <SubmenuItem>Documentation</SubmenuItem>
-              <SubmenuItem>About</  SubmenuItem>
-            </Submenu>
-          </HeaderMenuItem>
-        </HeaderMenu> */}
         <Icon onClick={handleOpen}>🗃️open</Icon>
         <Icon onClick={handleUpClick}>💽save state</Icon>
       </IconContainer>

@@ -1,7 +1,6 @@
 import DebugConsolePanel from '../panels/DebugConsolePanel'
 import ProjectPanel from '../panels/ProjectPanel'
 import TraversePanel from '../panels/traverser/TraversePanel'
-import { retry } from '@lifeomic/attempt'
 import { readDir } from '@tauri-apps/plugin-fs'
 import { Store } from '@tauri-apps/plugin-store'
 import { create } from 'zustand'
