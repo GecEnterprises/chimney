@@ -2,6 +2,11 @@
   "version": "1.0",
   "ports": [
     {
+      "id": "chimneyblock",
+      "type": "chimneyblock",
+      "label": "Chimney Block"
+    },
+    {
       "id": "chimneyblocktexture",
       "type": "chimneyblocktexture",
       "label": "chimneyblocktexture"
@@ -15,11 +20,6 @@
       "id": "string",
       "type": "string",
       "label": "String"
-    },
-    {
-      "id": "chimneyblock",
-      "type": "chimneyblock",
-      "label": "Chimney Block"
     }
   ],
   "nodes": [

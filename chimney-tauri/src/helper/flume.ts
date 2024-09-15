@@ -1,5 +1,5 @@
 import { DefVersion, ChimneyDefs } from 'chimney-defs'
-import { Colors, Controls, FlumeConfig } from 'flume'
+import { Controls, FlumeConfig } from 'flume'
 
 const config = new FlumeConfig()
 
@@ -10,6 +10,7 @@ const controls = {
   number: [Controls.number({})],
   custom: [Controls.custom({})],
 }
+
 function hashString(str: string): number {
   let hash = 0
   for (let i = 0; i < str.length; i++) {
@@ -43,6 +44,7 @@ function colorFromString(str: string): string {
 
   return colorArray[hash % colorArray.length]
 }
+
 def.ports.forEach((port) => {
   config.addPortType({
     type: port.id,
