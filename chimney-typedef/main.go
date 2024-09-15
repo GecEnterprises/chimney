@@ -23,7 +23,7 @@ func main() {
 	}
 
 	// Write the JSON data into cdef.json file
-	err = os.WriteFile("cdef.json", data, 0644)
+	err = os.WriteFile("../chimney-defs/src/V1_flume.json", data, 0644)
 	if err != nil {
 		fmt.Println("Error writing to file:", err)
 		return
