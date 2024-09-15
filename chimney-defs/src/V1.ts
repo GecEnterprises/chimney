@@ -1,6 +1,33 @@
 import { DefVersion } from "./DefVersion";
 import type { ChimneyDef } from "./root";
 
+export interface ChimneyEntity {}
+
+export interface TextureReference {
+  metaDescription: "asd";
+
+  path: string;
+}
+
+export interface BlockTexture {
+  up: TextureReference;
+  down: TextureReference;
+  north: TextureReference;
+  south: TextureReference;
+  east: TextureReference;
+  west: TextureReference;
+}
+
+export interface ChimneyBlock {
+  identifier: string;
+  texture: BlockTexture;
+}
+
+export interface ChimneyEnd {
+  entities: ChimneyEntity[];
+  blocks: ChimneyBlock[];
+}
+
 export const DefVersionV1: ChimneyDef = {
   version: DefVersion.V1,
   ports: [
