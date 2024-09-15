@@ -24,31 +24,8 @@ func convertStructsToNodesAndPorts(structs ...interface{}) ([]PortType, []Node) 
 
 	// Deduplicate inputs and outputs based on the ID field
 	for _, node := range nodesMap {
-		// Use map to track unique input and output IDs
-		uniqueInputMap := make(map[string]bool)
-		uniqueOutputMap := make(map[string]bool)
-
-		// Deduplicate Inputs
-		uniqueInputs := []NodePort{}
-		for _, input := range node.Inputs {
-			if !uniqueInputMap[input.ID] {
-				uniqueInputs = append(uniqueInputs, input)
-				uniqueInputMap[input.ID] = true
-			}
-		}
-		node.Inputs = uniqueInputs
-
-		// Deduplicate Outputs
-		uniqueOutputs := []NodePort{}
-		for _, output := range node.Outputs {
-			if !uniqueOutputMap[output.ID] {
-				uniqueOutputs = append(uniqueOutputs, output)
-				uniqueOutputMap[output.ID] = true
-			}
-		}
-		node.Outputs = uniqueOutputs
-
-		// Update the node in nodesMap after deduplication
+		node.Inputs = deduplicatePorts(node.Inputs)
+		node.Outputs = deduplicatePorts(node.Outputs)
 		nodesMap[node.ID] = node
 	}
 
@@ -107,23 +84,17 @@ func processStruct(s interface{}, portTypesMap map[string]PortType, nodesMap map
 
 	isNodePortHybrid := false
 
-	// Track unique input and output ports
-	inputPortMap := make(map[string]bool)
-	outputPortMap := make(map[string]bool)
-
 	for i := 0; i < t.NumField(); i++ {
 		field := t.Field(i)
 		if field.Anonymous {
-			// Check if it's a NodePortHybrid
 			if field.Type.Name() == "ChimneyNodePortHybrid" {
 				isNodePortHybrid = true
 			}
-			// Process embedded structs
 			processStruct(reflect.New(field.Type).Elem().Interface(), portTypesMap, nodesMap)
 			continue
 		}
 
-		fieldType := getPortType(field.Type)
+		fieldType := getPortType(field)
 
 		// Ensure the field type is in portTypesMap
 		if _, exists := portTypesMap[fieldType]; !exists {
@@ -146,44 +117,47 @@ func processStruct(s interface{}, portTypesMap map[string]PortType, nodesMap map
 			Label: addSpacesToCamelCase(field.Name),
 		}
 
-		// Create a unique key for the map to check uniqueness (ID + Name)
-		inputKey := nodePort.ID + ":" + nodePort.Name
-
-		// Add unique inputs
-		if !inputPortMap[inputKey] {
-			node.Inputs = append(node.Inputs, nodePort)
-			inputPortMap[inputKey] = true
-		}
+		node.Inputs = append(node.Inputs, nodePort)
 	}
 
 	if isNodePortHybrid {
-		nodeOutput := NodePort{
+		node.Outputs = append(node.Outputs, NodePort{
 			ID:    typeName,
 			Type:  typeName,
 			Name:  typeName,
 			Label: addSpacesToCamelCase(t.Name()),
-		}
-
-		// Create a unique key for output ports
-		outputKey := nodeOutput.ID + ":" + nodeOutput.Name
-
-		// Add unique outputs
-		if !outputPortMap[outputKey] {
-			node.Outputs = append(node.Outputs, nodeOutput)
-			outputPortMap[outputKey] = true
-		}
+		})
 	}
 
 	nodesMap[typeName] = node
 }
 
-func getPortType(t reflect.Type) string {
-	switch t.Kind() {
+func getPortType(field reflect.StructField) string {
+	if ctypeTag, ok := field.Tag.Lookup("ctype"); ok {
+		return strings.ToLower(ctypeTag)
+	}
+
+	switch field.Type.Kind() {
 	case reflect.String:
 		return "string"
 	default:
-		return strings.ToLower(t.Name())
+		return strings.ToLower(field.Type.Name())
 	}
+}
+
+func deduplicatePorts(ports []NodePort) []NodePort {
+	uniqueMap := make(map[string]bool)
+	result := []NodePort{}
+
+	for _, port := range ports {
+		key := port.ID + ":" + port.Name
+		if !uniqueMap[key] {
+			result = append(result, port)
+			uniqueMap[key] = true
+		}
+	}
+
+	return result
 }
 
 func addSpacesToCamelCase(s string) string {

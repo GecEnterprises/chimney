@@ -1,15 +1,10 @@
+import icon from '../assets/chimney_temp_icon.png'
 import { DefVersion, ChimneyDefs } from 'chimney-defs'
 import { Controls, FlumeConfig } from 'flume'
 
 const config = new FlumeConfig()
 
 const def = ChimneyDefs[DefVersion.V1]
-
-const controls = {
-  string: [Controls.text({})],
-  number: [Controls.number({})],
-  custom: [Controls.custom({})],
-}
 
 function hashString(str: string): number {
   let hash = 0
@@ -28,7 +23,6 @@ function hashString(str: string): number {
 
 function colorFromString(str: string): string {
   const hash = Math.abs(hashString(str))
-  console.log(hash)
 
   // Expanded color array for more variety
   const colorArray = [
@@ -45,7 +39,32 @@ function colorFromString(str: string): string {
   return colorArray[hash % colorArray.length]
 }
 
+function getControl(str: string) {
+  switch (str) {
+    case 'string':
+      return Controls.text({})
+    case 'number':
+      return Controls.number({})
+    case 'filepath':
+      console.log('fp')
+      return Controls.custom({
+        name: str,
+        label: str,
+        render: (data, onChange) => (
+          <div>
+            <img src={icon} alt="Icon" />
+            <button>Test</button>
+          </div>
+        ),
+      })
+    default:
+      return Controls.text({})
+  }
+}
+
 def.ports.forEach((port) => {
+  console.log(port)
+
   config.addPortType({
     type: port.id,
     name: port.id,
@@ -53,7 +72,7 @@ def.ports.forEach((port) => {
     //@ts-ignore
     color: colorFromString(port.id),
     //@ts-ignore
-    controls: controls[port.type],
+    controls: [getControl(port.type)],
   })
 })
 

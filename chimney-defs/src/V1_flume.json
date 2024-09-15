@@ -17,6 +17,11 @@
       "label": "chimneytexturereference"
     },
     {
+      "id": "filepath",
+      "type": "filepath",
+      "label": "filepath"
+    },
+    {
       "id": "string",
       "type": "string",
       "label": "String"
@@ -31,7 +36,7 @@
       "inputs": [
         {
           "id": "path",
-          "type": "string",
+          "type": "filepath",
           "name": "path",
           "label": "Path"
         }

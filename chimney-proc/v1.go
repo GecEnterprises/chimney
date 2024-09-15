@@ -10,7 +10,7 @@ type ChimneyNode struct{}
 type ChimneyTextureReference struct {
 	ChimneyNodePortHybrid
 
-	Path string `json:"path"`
+	Path string `json:"path" ctype:"filepath"`
 }
 
 // ChimneyBlockTexture represents textures for all sides of a block
