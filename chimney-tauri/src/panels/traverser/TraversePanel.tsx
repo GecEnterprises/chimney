@@ -14,13 +14,25 @@ const EditorContainer = styled.div`
 `
 
 const TraversePanel: React.FC = () => {
-  const handleCenterFocus = () => {}
+  const nodeEditor = React.useRef()
+
+  const saveNodes = () => {
+    //@ts-ignore
+    const nodes = nodeEditor.current.getNodes()
+    // Do whatever you want with the nodes
+
+    console.log(nodes)
+  }
 
   return (
     <PanelContainer title="Traverse">
       <EditorContainer>
-        <NodeEditor portTypes={config.portTypes} nodeTypes={config.nodeTypes} />
-        <Toolbox onCenterFocus={handleCenterFocus} />
+        <NodeEditor
+          ref={nodeEditor}
+          portTypes={config.portTypes}
+          nodeTypes={config.nodeTypes}
+        />
+        <Toolbox onCenterFocus={saveNodes} />
       </EditorContainer>
     </PanelContainer>
   )
