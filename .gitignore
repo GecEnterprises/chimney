@@ -68,3 +68,6 @@ bower_components
 .yarn-integrity
 
 .vscode
+
+.idea/**
+.idea

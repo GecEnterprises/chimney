@@ -1,11 +1,10 @@
 import { DefVersion } from "./DefVersion";
 import { DefVersionV1 } from "./V1";
 
-export type PortTypeName = "string";
+export type PortTypeName = string;
 
 export interface PortType {
   id: string;
-  typeTs: string;
   type: PortTypeName;
   label: string;
 }
@@ -27,7 +26,7 @@ export interface Node {
 }
 
 export interface ChimneyDef {
-  version: DefVersion;
+  version: string;
 
   ports: PortType[];
   nodes: Node[];

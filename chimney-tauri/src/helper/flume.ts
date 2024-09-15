@@ -5,14 +5,20 @@ const config = new FlumeConfig()
 
 const def = ChimneyDefs[DefVersion.V1]
 
+const controls = {
+  string: [Controls.text({})],
+  number: [Controls.number({})],
+  custom: [Controls.custom({})],
+}
+
 def.ports.forEach((port) => {
   config.addPortType({
     type: port.id,
     name: port.id,
     label: port.label,
     color: Colors.green,
-    controls:
-      port.typeTs == 'string' ? [Controls.text({})] : [Controls.number({})],
+    //@ts-ignore
+    controls: controls[port.type],
   })
 })
 

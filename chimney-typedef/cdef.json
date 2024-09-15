@@ -1,0 +1,122 @@
+{
+  "version": "1.0",
+  "ports": [
+    {
+      "id": "chimneytexturereference",
+      "type": "chimneytexturereference",
+      "label": "chimneytexturereference"
+    },
+    {
+      "id": "string",
+      "type": "string",
+      "label": "String"
+    },
+    {
+      "id": "chimneyblock",
+      "type": "chimneyblock",
+      "label": "Chimney Block"
+    },
+    {
+      "id": "chimneyblocktexture",
+      "type": "chimneyblocktexture",
+      "label": "chimneyblocktexture"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "chimneytexturereference",
+      "description": "A chimney texture reference",
+      "type": "chimneytexturereference",
+      "label": "Chimney Texture Reference",
+      "inputs": [
+        {
+          "id": "path",
+          "type": "string",
+          "name": "path",
+          "label": "Path"
+        }
+      ],
+      "outputs": [
+        {
+          "id": "chimneytexturereference",
+          "type": "chimneytexturereference",
+          "name": "chimneytexturereference",
+          "label": "Chimney Texture Reference"
+        }
+      ]
+    },
+    {
+      "id": "chimneyblocktexture",
+      "description": "A chimney block texture",
+      "type": "chimneyblocktexture",
+      "label": "Chimney Block Texture",
+      "inputs": [
+        {
+          "id": "up",
+          "type": "chimneytexturereference",
+          "name": "up",
+          "label": "Up"
+        },
+        {
+          "id": "down",
+          "type": "chimneytexturereference",
+          "name": "down",
+          "label": "Down"
+        },
+        {
+          "id": "north",
+          "type": "chimneytexturereference",
+          "name": "north",
+          "label": "North"
+        },
+        {
+          "id": "south",
+          "type": "chimneytexturereference",
+          "name": "south",
+          "label": "South"
+        },
+        {
+          "id": "east",
+          "type": "chimneytexturereference",
+          "name": "east",
+          "label": "East"
+        },
+        {
+          "id": "west",
+          "type": "chimneytexturereference",
+          "name": "west",
+          "label": "West"
+        }
+      ],
+      "outputs": [
+        {
+          "id": "chimneyblocktexture",
+          "type": "chimneyblocktexture",
+          "name": "chimneyblocktexture",
+          "label": "Chimney Block Texture"
+        }
+      ]
+    },
+    {
+      "id": "chimneyblock",
+      "description": "A chimney block",
+      "type": "chimneyblock",
+      "label": "Chimney Block",
+      "inputs": [
+        {
+          "id": "identifier",
+          "type": "string",
+          "name": "identifier",
+          "label": "Identifier"
+        },
+        {
+          "id": "texture",
+          "type": "chimneyblocktexture",
+          "name": "texture",
+          "label": "Texture"
+        }
+      ],
+      "outputs": []
+    }
+  ]
+}
