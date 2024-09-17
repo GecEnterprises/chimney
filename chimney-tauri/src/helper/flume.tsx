@@ -1,4 +1,4 @@
-import icon from '../assets/chimney_temp_icon.png'
+import { renderFilepathFlume } from './flumeCompnents'
 import { DefVersion, ChimneyDefs } from 'chimney-defs'
 import { Controls, FlumeConfig } from 'flume'
 
@@ -46,16 +46,10 @@ function getControl(str: string) {
     case 'number':
       return Controls.number({})
     case 'filepath':
-      console.log('fp')
       return Controls.custom({
         name: str,
         label: str,
-        render: (data, onChange) => (
-          <div>
-            <img src={icon} alt="Icon" />
-            <button>Test</button>
-          </div>
-        ),
+        render: renderFilepathFlume,
       })
     default:
       return Controls.text({})
